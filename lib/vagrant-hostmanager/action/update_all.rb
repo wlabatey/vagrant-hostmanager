@@ -29,12 +29,18 @@ module VagrantPlugins
           # update /etc/hosts file on active machines
           if @machine.config.hostmanager.manage_guest?
             env[:ui].info I18n.t('vagrant_hostmanager.action.update_guests')
+            puts "global_env.active_machines = #{@global_env.active_machines}"
             @global_env.active_machines.each do |name, p|
+
               if p == @provider
+                if @config.hostmanager.multi_vm_project
+                    machine_name = ARGV[1]
+                    next if name != machine_name
+                end
                 machine = @global_env.machine(name, p)
                 state = machine.state
                 if ['active','running'].include?(state.short_description)
-                  @updater.update_guest(machine)
+                    @updater.update_guest(machine)
                 end
               end
             end

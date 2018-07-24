@@ -123,7 +123,20 @@ module VagrantPlugins
         end
 
         def get_machines
-          if @config.hostmanager.include_offline?
+          machine_name = ARGV[1]
+
+          if @config.hostmanager.multi_vm_project?
+            puts "inside multi_vm_project block"
+            puts "@global_env.active_machines = #{@global_env.active_machines}"
+            puts "@global_env.machine_names = #{@global_env.machine_names}"
+            puts "machine_name = #{machine_name}"
+
+            machines = @global_env.machine_names
+            # @todo (high) - Convert name to string and check it matches machine_name
+              .select { |name, provider| name.to_s == machine_name }
+              .collect { |name, provider| name }
+            puts "machines = #{machines}"
+          elsif @config.hostmanager.include_offline?
             machines = @global_env.machine_names
           else
             machines = @global_env.active_machines
