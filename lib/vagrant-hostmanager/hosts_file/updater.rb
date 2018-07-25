@@ -123,14 +123,8 @@ module VagrantPlugins
         end
 
         def get_machines
-
-
           if @config.hostmanager.multi_vm_project?
             machine_name = ARGV[1]
-            puts "inside multi_vm_project block"
-            puts "@global_env.active_machines = #{@global_env.active_machines}"
-            puts "@global_env.machine_names = #{@global_env.machine_names}"
-            puts "machine_name = #{machine_name}"
 
             machines = @global_env.machine_names
                 .select { |name, provider| name.to_s == machine_name.to_s }
@@ -143,7 +137,6 @@ module VagrantPlugins
               .collect { |name, provider| name }
           end
           # Collect only machines that exist for the current provider
-          puts "machines after select/collect = #{machines}"
           machines.collect do |name|
                 begin
                   machine = @global_env.machine(name, @provider)
