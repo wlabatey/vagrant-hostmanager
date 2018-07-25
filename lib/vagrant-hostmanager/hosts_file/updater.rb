@@ -12,6 +12,7 @@ module VagrantPlugins
           @provider = provider
           @logger = Log4r::Logger.new('vagrant::hostmanager::updater')
           @logger.debug("init updater")
+          @machine_name = ARGV[1].to_s
         end
 
         def update_guest(machine)
@@ -124,10 +125,8 @@ module VagrantPlugins
 
         def get_machines
           if @config.hostmanager.multi_vm_project?
-            machine_name = ARGV[1]
-
             machines = @global_env.machine_names
-                .select { |name, provider| name.to_s == machine_name.to_s }
+                .select { |name, provider| name.to_s == @machine_name }
                 .collect { |name, provider| name }
           elsif @config.hostmanager.include_offline?
             machines = @global_env.machine_names
@@ -171,7 +170,7 @@ module VagrantPlugins
 
         def read_or_create_id
           if @config.hostmanager.multi_vm_project?
-            file = Pathname.new("#{@global_env.local_data_path}/hostmanager/#{ARGV[1]}/id")
+            file = Pathname.new("#{@global_env.local_data_path}/hostmanager/#{@machine_name}/id")
           else
             file = Pathname.new("#{@global_env.local_data_path}/hostmanager/id")
           end
