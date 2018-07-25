@@ -4,6 +4,6 @@ Gemfile.lock
 test/.vagrant
 .vagrant
 config.yml
-ruby/
-salt/
+ruby
+salt
 Vagrantfile
