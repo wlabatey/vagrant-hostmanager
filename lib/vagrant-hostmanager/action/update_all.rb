@@ -40,7 +40,7 @@ module VagrantPlugins
                 machine = @global_env.machine(name, p)
                 state = machine.state
                 if ['active','running'].include?(state.short_description)
-                    @updater.update_guest(machine)
+                  @updater.update_guest(machine)
                 end
               end
             end
